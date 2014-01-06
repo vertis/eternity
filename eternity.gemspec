@@ -1,15 +1,15 @@
 # -*- encoding: utf-8 -*-
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'eternity/version'
+require './lib/eternity/version'
 
 Gem::Specification.new do |gem|
   gem.name          = "eternity"
   gem.version       = Eternity::VERSION
-  gem.authors       = ["TODO: Write your name"]
-  gem.email         = ["TODO: Write your email address"]
-  gem.description   = %q{TODO: Write a gem description}
-  gem.summary       = %q{TODO: Write a gem summary}
+  gem.authors       = ["Luke Chadwick"]
+  gem.email         = ["me@vertis.io"]
+  gem.description   = %q{Time range parsing}
+  gem.summary       = %q{Time range parsing}
   gem.homepage      = ""
 
   gem.files         = `git ls-files`.split($/)
