@@ -1,6 +1,6 @@
 # Eternity
 
-TODO: Write a gem description
+Eternity is a gem designed to make it easier to take timed dataset and select parts of it.
 
 ## Installation
 
@@ -18,8 +18,15 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```
+data = File.read(File.join(File.dirname(__FILE__), "fixtures/exampledata.json")).split("\n").map {|line| JSON.load(line.strip) }
+dataset = Eternity::Dataset.new(@data, :time_key => "timestamp", :time_format => :epoch)
+last_entry_timestamp = Time.at(data.last["timestamp"])
+middle=last_entry_timestamp-43200
+middle_plus_five=last_entry_timestamp-42900
+p dataset.between(middle, middle_plus_five)
 
+```
 ## Contributing
 
 1. Fork it
