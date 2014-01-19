@@ -1,6 +1,6 @@
 # Eternity
 
-Eternity is a gem designed to make it easier to take timed dataset and select parts of it.
+Eternity is a gem designed to make it easier to take a set of timestamped data and select parts of it.
 
 ## Installation
 
