@@ -1,5 +1,7 @@
 # Eternity
 
+[![Build Status](https://travis-ci.org/vertis/eternity.png)](https://travis-ci.org/vertis/eternity)
+
 Eternity is a gem designed to make it easier to take a set of timestamped data and select parts of it.
 
 ## Installation
