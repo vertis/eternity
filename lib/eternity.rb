@@ -7,7 +7,7 @@ module Eternity
       @time_format = options[:time_format] || :normal
       @cache_namespace = options[:cache_namespace] || "eternity-cache"
       @should_cache = options[:should_cache] || false
-
+      data = data.sort {|a,b| a[@time_key] <=> b[@time_key] }
       if @time_format==:epoch
         @data = data.map do |datum|
           datum["timestamp"]=Time.at(datum["timestamp"])
