@@ -38,6 +38,14 @@ describe Eternity::Dataset do
     entries.to_a.should == [five_mins_ago_entry, two_mins_ago_entry]
   end
 
+  it 'should return the previous entry to a given point in time' do
+    expect(subject.previous(Time.now - 100)).to eq(two_mins_ago_entry)
+  end
+
+  it 'should return the next entry to a given point in time' do
+    expect(subject.next(Time.now - 100)).to eq(one_mins_ago_entry)
+  end
+
   context 'unordered data' do
     let(:unordered_time_data) do
       [

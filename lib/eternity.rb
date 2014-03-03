@@ -36,5 +36,33 @@ module Eternity
       results = results.select { |d| d["eternity_timestamp"] > startpoint && d["eternity_timestamp"] < endpoint }
       results.map {|r| x = r.dup; x.delete("eternity_timestamp"); x }
     end
+
+    def previous(pointintime)
+      start_key = (pointintime - pointintime.sec).to_i
+      key = start_key
+      while(key >= @start_key)
+        if @hash_data[key] && !@hash_data[key].select { |d| d["eternity_timestamp"] < pointintime }.empty?
+          results = @hash_data[key].select { |d| d["eternity_timestamp"] < pointintime }
+          results = results.sort{|a,b| a["eternity_timestamp"]<=>b["eternity_timestamp"] }
+          return results.map {|r| x = r.dup; x.delete("eternity_timestamp"); x }.last
+        end
+        key -= 60
+      end
+      nil
+    end
+
+    def next(pointintime)
+      start_key = (pointintime - pointintime.sec).to_i
+      key = start_key
+      while(key <= @end_key)
+        if @hash_data[key] && !@hash_data[key].select { |d| d["eternity_timestamp"] > pointintime }.empty?
+          results = @hash_data[key].select { |d| d["eternity_timestamp"] > pointintime }
+          results = results.sort{|a,b| a["eternity_timestamp"]<=>b["eternity_timestamp"] }
+          return results.map {|r| x = r.dup; x.delete("eternity_timestamp"); x }.last
+        end
+        key += 60
+      end
+      nil
+    end
   end
 end
