@@ -2,6 +2,8 @@ require 'eternity/version'
 
 module Eternity
   class Dataset
+    include Enumerable
+
     def initialize(data, options={})
       @time_key = options[:time_key] || :timestamp
       @time_format = options[:time_format] || :normal
@@ -16,6 +18,10 @@ module Eternity
       end
       @start_key = @hash_data.keys.min
       @end_key = @hash_data.keys.max
+    end
+
+    def each(&block)
+      @hash_data.each(&block)
     end
 
     def after(pointintime)
