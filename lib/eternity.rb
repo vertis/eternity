@@ -14,7 +14,7 @@ module Eternity
         eternity_timestamp = @time_format == :epoch ? Time.at(datum[@time_key]) : datum[@time_key]
         key = (eternity_timestamp - eternity_timestamp.sec).to_i
         @hash_data[key] ||= []
-        @hash_data[key] << datum.merge("eternity_timestamp" => eternity_timestamp)
+        @hash_data[key] << datum.merge('eternity_timestamp' => eternity_timestamp)
       end
       @start_key = @hash_data.keys.min
       @end_key = @hash_data.keys.max
@@ -39,18 +39,18 @@ module Eternity
         @hash_data[key]
       end.flatten.compact
       #p results
-      results = results.select { |d| d["eternity_timestamp"] > startpoint && d["eternity_timestamp"] < endpoint }
-      results.map {|r| x = r.dup; x.delete("eternity_timestamp"); x }
+      results = results.select { |d| d['eternity_timestamp'] > startpoint && d['eternity_timestamp'] < endpoint }
+      results.map {|r| x = r.dup; x.delete('eternity_timestamp'); x }
     end
 
     def previous(pointintime)
       start_key = (pointintime - pointintime.sec).to_i
       key = start_key
       while(key >= @start_key)
-        if @hash_data[key] && !@hash_data[key].select { |d| d["eternity_timestamp"] < pointintime }.empty?
-          results = @hash_data[key].select { |d| d["eternity_timestamp"] < pointintime }
-          results = results.sort{|a,b| a["eternity_timestamp"]<=>b["eternity_timestamp"] }
-          return results.map {|r| x = r.dup; x.delete("eternity_timestamp"); x }.last
+        if @hash_data[key] && !@hash_data[key].select { |d| d['eternity_timestamp'] < pointintime }.empty?
+          results = @hash_data[key].select { |d| d['eternity_timestamp'] < pointintime }
+          results = results.sort{|a,b| a['eternity_timestamp']<=>b['eternity_timestamp'] }
+          return results.map {|r| x = r.dup; x.delete('eternity_timestamp'); x }.last
         end
         key -= 60
       end
@@ -58,13 +58,25 @@ module Eternity
     end
 
     def next(pointintime)
+      time_key = 'eternity_timestamp'
       start_key = (pointintime - pointintime.sec).to_i
       key = start_key
-      while(key <= @end_key)
-        if @hash_data[key] && !@hash_data[key].select { |d| d["eternity_timestamp"] > pointintime }.empty?
-          results = @hash_data[key].select { |d| d["eternity_timestamp"] > pointintime }
-          results = results.sort{|a,b| a["eternity_timestamp"]<=>b["eternity_timestamp"] }
-          return results.map {|r| x = r.dup; x.delete("eternity_timestamp"); x }.last
+      while key <= @end_key
+        unless @hash_data[key] # skip to the next key
+          key += 60
+          next
+        end
+        unless @hash_data[key].select { |d| d[time_key] > pointintime }.empty?
+          results = @hash_data[key].select do |d|
+            d[time_key] > pointintime
+          end
+          results = results.sort do |a, b|
+            a[time_key] <=> b[time_key]
+          end
+          return results.map do |r|
+            r.delete(time_key)
+            r
+          end.last
         end
         key += 60
       end
